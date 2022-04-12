@@ -1,0 +1,36 @@
+{
+  "name": "nl-appointments",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "ind": "nodemon --exec \"tsc && node dist/ind.js\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "got": "^12.0.3",
+    "moment": "^2.29.2",
+    "node-notifier": "^10.0.1"
+  },
+  "devDependencies": {
+    "@types/node-notifier": "^8.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
+    "eslint": "^8.13.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-mocha-no-only": "^1.1.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-typescript": "^0.14.0",
+    "eslint-plugin-unicorn": "^42.0.0",
+    "eslint-plugin-you-dont-need-lodash-underscore": "^6.12.0",
+    "nodemon": "^2.0.15",
+    "typescript": "^4.6.3"
+  },
+  "volta": {
+    "node": "16.14.2",
+    "yarn": "1.22.18"
+  }
+}
