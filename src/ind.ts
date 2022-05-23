@@ -32,7 +32,7 @@ async function retryAppointment() {
 async function getEarliestAvailableDate() {
   const res = await got({
     method: 'get',
-    url: 'https://oap.ind.nl/oap/api/desks/ZW/slots/?productKey=BIO&persons=1'
+    url: 'https://oap.ind.nl/oap/api/desks/ZW/slots/?productKey=DOC&persons=1'
   });
 
   const availableAppointments: IAppointment[] = JSON.parse(res.body.split('\n')[1]).data;
