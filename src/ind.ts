@@ -3,8 +3,8 @@ import moment from 'moment';
 import notifier from 'node-notifier';
 
 
-const EARLIEST_ACCEPTABLE_DATE = '2022-05-01';
-const LATEST_ACCEPTABLE_DATE = '2022-06-05';
+const EARLIEST_ACCEPTABLE_DATE = '2022-06-01';
+const LATEST_ACCEPTABLE_DATE = '2022-06-15';
 
 tryToGetAppointment().catch(console.error);
 
@@ -32,11 +32,12 @@ async function retryAppointment() {
 async function getEarliestAvailableDate() {
   const res = await got({
     method: 'get',
-    url: 'https://oap.ind.nl/oap/api/desks/AM/slots/?productKey=BIO&persons=1'
+    url: 'https://oap.ind.nl/oap/api/desks/ZW/slots/?productKey=BIO&persons=1'
   });
 
   const availableAppointments: IAppointment[] = JSON.parse(res.body.split('\n')[1]).data;
-  const [{ startTime, endTime, date: appointmentDate, key: appointmentKey }] = availableAppointments;
+  const [{ startTime, endTime, date: appointmentDate, key: appointmentKey }] = availableAppointments
+    .filter(appointment => moment(appointment.date).isAfter(EARLIEST_ACCEPTABLE_DATE));
 
   return { appointmentKey, appointmentDate, startTime, endTime };
 }
