@@ -37,6 +37,7 @@
   "nodemonConfig": {
     "ignore": [
       "dist/*"
-    ]
+    ],
+    "ext": "ts"
   }
 }

@@ -11,8 +11,12 @@ tryToGetAppointment().catch(console.error);
 async function tryToGetAppointment() {
   const { appointmentDate } = await getEarliestAvailableDate();
 
-  if (moment(appointmentDate).isBetween(EARLIEST_ACCEPTABLE_DATE, LATEST_ACCEPTABLE_DATE)) {
+  if (!appointmentDate) {
+    log('No appointments available.');
+    return await retryAppointment();
+  }
 
+  if (moment(appointmentDate).isBetween(EARLIEST_ACCEPTABLE_DATE, LATEST_ACCEPTABLE_DATE)) {
     notifier.notify(`Found the earliest appointment at: ${appointmentDate}`);
     log(appointmentDate);
 
@@ -32,13 +36,18 @@ async function retryAppointment() {
 async function getEarliestAvailableDate() {
   const res = await got({
     method: 'get',
-    url: 'https://oap.ind.nl/oap/api/desks/ZW/slots/?productKey=DOC&persons=1'
+    url: 'https://oap.ind.nl/oap/api/desks/AM/slots/?productKey=BIO&persons=1'
   });
 
   const availableAppointments: IAppointment[] = JSON.parse(res.body.split('\n')[1]).data;
-  const [{ startTime, endTime, date: appointmentDate, key: appointmentKey }] = availableAppointments
+
+  const availableAppointmentsWithinConstraints = availableAppointments
     .filter(appointment => moment(appointment.date).isAfter(EARLIEST_ACCEPTABLE_DATE));
 
+  if (availableAppointments.length === 0) {
+    return { appointmentDate: null };
+  }
+  const [{ startTime, endTime, date: appointmentDate, key: appointmentKey }] = availableAppointmentsWithinConstraints;
   return { appointmentKey, appointmentDate, startTime, endTime };
 }
 
